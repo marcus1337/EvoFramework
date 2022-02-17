@@ -1,0 +1,3 @@
+add_library(NN NN.cpp NN.h)
+
+target_link_libraries(NN)

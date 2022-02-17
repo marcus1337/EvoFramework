@@ -2,3 +2,4 @@ build/
 .vs/
 src/out/
 src/Tests/build/
+out/
