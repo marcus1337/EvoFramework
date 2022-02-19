@@ -1,13 +1,14 @@
+#include <vector>
+#include "NNLayer.h"
 
 #ifndef NN_H
 #define NN_H
-
 
 class NN {
 
 public:
 
-    int foo();
+    NN(int numIn, int numOut, int numLayer1Nodes, int numLayer2Nodes);
 
 };
 

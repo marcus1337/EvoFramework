@@ -1,5 +1,7 @@
 #include "NN.h"
 
-int NN::foo() {
-    return 3;
+
+
+NN::NN(int numIn, int numOut, int numLayer1Nodes, int numLayer2Nodes) {
+
 }
