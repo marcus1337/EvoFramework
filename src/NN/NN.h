@@ -6,9 +6,15 @@
 
 class NN {
 
+    std::vector<NNLayer> layers;
+    void clear();
+
 public:
 
-    NN(int numIn, int numOut, int numLayer1Nodes, int numLayer2Nodes);
+    NN(std::vector<int> numNodesInLayers);
+    void propagate(const std::vector<float>&);
+    int getOutputIndex();
+    std::vector<float> getOutput();
 
 };
 

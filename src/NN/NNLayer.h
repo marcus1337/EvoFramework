@@ -7,14 +7,15 @@
 
 class NNLayer {
 
-    float sigmoid(float x);
-    NNLayer* nextLayer = nullptr;
+    float sigmoid(const float x) const;
     std::vector<Edge> edges;
-    std::vector<float> nodes;
+    std::vector<float> values;
 
 public:
 
     NNLayer(int numNodes, int numTargetNodes);
+    std::vector<float> getValues() const;
+    void setValues(const std::vector<float>& _values);
     void activation();
     void clear();
     void propagate(NNLayer& nextLayer);
