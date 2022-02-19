@@ -55,3 +55,15 @@ int NNLayer::getNumNodes() const {
 int NNLayer::getNumEdges() const {
     return edges.size();
 }
+
+Edge NNLayer::getEdge(int index) const {
+    return edges[index];
+}
+
+void NNLayer::setWeight(int index, float weight) {
+    edges[index].weight = weight;
+}
+
+std::vector<Edge>& NNLayer::getEdgesRef() {
+    return edges;
+}

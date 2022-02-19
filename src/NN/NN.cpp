@@ -56,3 +56,29 @@ int NN::getNumEdges() const {
     }
     return numEdges;
 }
+
+void NN::setWeight(int index, float weight) {
+    int layerIndex = 0;
+    while (index >= layers[layerIndex].getNumEdges()) {
+        index -= layers[layerIndex].getNumEdges();
+        layerIndex++;
+    }
+    layers[layerIndex].setWeight(index, weight);
+}
+
+float NN::getWeight(int index) const {
+    int layerIndex = 0;
+    while (index >= layers[layerIndex].getNumEdges()) {
+        index -= layers[layerIndex].getNumEdges();
+        layerIndex++;
+    }
+    return layers[layerIndex].getEdge(index).weight;
+}
+
+std::vector<std::reference_wrapper<std::vector<Edge>>> NN::getEdgesRefs() {
+    std::vector<std::reference_wrapper<std::vector<Edge>>> edgesRefs;
+    for (auto& layer : layers) {
+        edgesRefs.push_back(layer.getEdgesRef());
+    }
+    return edgesRefs;
+}

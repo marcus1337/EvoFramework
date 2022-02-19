@@ -22,6 +22,9 @@ public:
     void clear();
     void propagate(NNLayer& nextLayer);
     void add(int index, float value);
+    Edge getEdge(int index) const;
+    void setWeight(int index, float weight);
+    std::vector<Edge>& getEdgesRef();
 };
 
 #endif // !NNLAYER_H

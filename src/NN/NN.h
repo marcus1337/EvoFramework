@@ -1,5 +1,6 @@
 #include <vector>
 #include "NNLayer.h"
+#include <functional>
 
 #ifndef NN_H
 #define NN_H
@@ -19,6 +20,9 @@ public:
     int getNumLayers() const;
     int getNumNodesInLayer(int index) const;
     int getNumEdges() const;
+    void setWeight(int index, float weight);
+    float getWeight(int index) const;
+    std::vector<std::reference_wrapper<std::vector<Edge>>> getEdgesRefs();
 
 };
 

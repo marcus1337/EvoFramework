@@ -13,3 +13,11 @@ TEST_CASE("edge count", "[nn]") {
     REQUIRE(nn.getNumEdges() == 21);
 }
 
+TEST_CASE("deterministic", "[nn]") {
+    NN nn({ 2, 3, 7, 2 });
+    nn.propagate({ 1.f,0.f });
+    std::vector<float> output1 = nn.getOutput();
+    nn.propagate({ 1.f,0.f });
+    std::vector<float> output2 = nn.getOutput();
+    REQUIRE((output1[0] == output2[0] && output1[1] == output2[1]));
+}
