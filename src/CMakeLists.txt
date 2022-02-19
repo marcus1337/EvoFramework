@@ -4,13 +4,17 @@ project(EvoFramework)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(${PROJECT_NAME} main.cpp)
+include_directories("${PROJECT_SOURCE_DIR}")
 
 add_subdirectory(NN)
 list(APPEND EXTRA_LIB_DIRS "NN")
 list(APPEND EXTRA_INCLUDE_DIRS "NN")
 list(APPEND EXTRA_LINK_DIRS NN)
 
-include_directories("${PROJECT_SOURCE_DIR}")
+add_subdirectory(Mutation)
+list(APPEND EXTRA_LIB_DIRS "Mutation")
+list(APPEND EXTRA_INCLUDE_DIRS "Mutation")
+list(APPEND EXTRA_LINK_DIRS Mutation)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDE_DIRS})
 target_link_directories(${PROJECT_NAME} PUBLIC ${EXTRA_LIB_DIRS})
