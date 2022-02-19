@@ -47,3 +47,11 @@ void NNLayer::setValues(const std::vector<float>& _values) {
     for(std::size_t i = 0; i < _values.size(); i++)
         values[i] = _values[i];
 }
+
+int NNLayer::getNumNodes() const {
+    return values.size();
+}
+
+int NNLayer::getNumEdges() const {
+    return edges.size();
+}

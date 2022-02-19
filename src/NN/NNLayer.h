@@ -15,6 +15,8 @@ public:
 
     NNLayer(int numNodes, int numTargetNodes);
     std::vector<float> getValues() const;
+    int getNumEdges() const;
+    int getNumNodes() const;
     void setValues(const std::vector<float>& _values);
     void activation();
     void clear();

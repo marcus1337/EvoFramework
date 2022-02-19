@@ -1,7 +1,6 @@
 #include "NN.h"
 
 
-
 NN::NN(std::vector<int> numNodesInLayers) {
     for (std::size_t i = 0; i < numNodesInLayers.size(); i++) {
         int numNodes = numNodesInLayers[i];
@@ -27,7 +26,7 @@ void NN::clear() {
     }
 }
 
-int NN::getOutputIndex() {
+int NN::getOutputIndex() const{
     std::vector<float> output = getOutput();
     float highest = output[0];
     int index = 0;
@@ -40,6 +39,20 @@ int NN::getOutputIndex() {
 
     return index;
 }
-std::vector<float> NN::getOutput() {
+std::vector<float> NN::getOutput() const{
     return layers[layers.size() - 1].getValues();
+}
+
+int NN::getNumLayers() const{
+    return layers.size();
+}
+int NN::getNumNodesInLayer(int index) const{
+    return layers[index].getNumNodes();
+}
+int NN::getNumEdges() const {
+    int numEdges = 0;
+    for (const NNLayer& layer : layers) {
+        numEdges += layer.getNumEdges();
+    }
+    return numEdges;
 }

@@ -13,8 +13,12 @@ public:
 
     NN(std::vector<int> numNodesInLayers);
     void propagate(const std::vector<float>&);
-    int getOutputIndex();
-    std::vector<float> getOutput();
+    int getOutputIndex() const;
+    std::vector<float> getOutput() const;
+
+    int getNumLayers() const;
+    int getNumNodesInLayer(int index) const;
+    int getNumEdges() const;
 
 };
 
