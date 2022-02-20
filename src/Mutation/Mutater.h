@@ -12,9 +12,12 @@ class Mutater {
     std::vector<float> weights;
 
     void setWeights();
+    int randInt(int from, int to);
 
 public:
     float getRandomWeight();
+    void randomize(NN& nn);
+    void mutate(NN& nn, float mutationRate = 1.f);
 
     Mutater();
 

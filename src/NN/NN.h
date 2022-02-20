@@ -23,6 +23,7 @@ public:
     void setWeight(int index, float weight);
     float getWeight(int index) const;
     std::vector<std::reference_wrapper<std::vector<Edge>>> getEdgesRefs();
+    std::reference_wrapper<std::vector<Edge>> getEdgesRef(int index);
 
 };
 

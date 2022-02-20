@@ -82,3 +82,7 @@ std::vector<std::reference_wrapper<std::vector<Edge>>> NN::getEdgesRefs() {
     }
     return edgesRefs;
 }
+
+std::reference_wrapper<std::vector<Edge>> NN::getEdgesRef(int index) {
+    return layers[index].getEdgesRef();
+}
