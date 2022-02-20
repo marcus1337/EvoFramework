@@ -2,19 +2,22 @@
 #include <vector>
 #include <string>
 #include "NN/NN.h"
+#include "Mutation/Mutater.h"
+#include "Elite.h"
 
 #ifndef TRAINER_H
 #define TRAINER_H
 
 class Trainer {
 
+    Mutater mutater;
     std::string _environmentScript;
-    int numAIs, numInputNodes, numOutputNodes;
-    std::vector<NN> elites;
+    int numElites, numInputNodes, numOutputNodes;
+    std::vector<Elite> elites;
 
 public:
 
-    Trainer(int _numAIs, int _numInputNodes, int _numOutputNodes, std::string _environmentScript);
+    Trainer(int _numElites, int _numInputNodes, int _numOutputNodes, std::string _environmentScript);
 
 };
 
