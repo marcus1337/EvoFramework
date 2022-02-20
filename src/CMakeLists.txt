@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(EvoFramework)
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp "Trainer/Trainer.h")
 include_directories("${PROJECT_SOURCE_DIR}")
 
 add_subdirectory(NN)
@@ -15,6 +15,11 @@ add_subdirectory(Mutation)
 list(APPEND EXTRA_LIB_DIRS "Mutation")
 list(APPEND EXTRA_INCLUDE_DIRS "Mutation")
 list(APPEND EXTRA_LINK_DIRS Mutation)
+
+add_subdirectory(Trainer)
+list(APPEND EXTRA_LIB_DIRS "Trainer")
+list(APPEND EXTRA_INCLUDE_DIRS "Trainer")
+list(APPEND EXTRA_LINK_DIRS Trainer)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDE_DIRS})
 target_link_directories(${PROJECT_NAME} PUBLIC ${EXTRA_LIB_DIRS})
