@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.18.4)
 
 project(EvoFramework)
 set(CMAKE_CXX_STANDARD 20)
@@ -16,17 +16,29 @@ list(APPEND EXTRA_LIB_DIRS "Mutation")
 list(APPEND EXTRA_INCLUDE_DIRS "Mutation")
 list(APPEND EXTRA_LINK_DIRS Mutation)
 
+if(WIN32)
+    set(LUA_INCLUDE_DIR "C:/Users/Maccc/Documents/Coding/vcpkg/packages/lua_x64-windows/include")
+    set(LUA_LIBRARIES "C:/Users/Maccc/Documents/Coding/vcpkg/packages/lua_x64-windows/lib/lua.lib")
+endif(WIN32)
+if(UNIX)
+    find_package(Lua REQUIRED)
+endif(UNIX)
+list(APPEND EXTRA_INCLUDE_DIRS ${LUA_INCLUDE_DIR})
+list(APPEND EXTRA_LINK_DIRS ${LUA_LIBRARIES})
+include_directories (${LUA_INCLUDE_DIR})
+
 add_subdirectory(Trainer)
 list(APPEND EXTRA_LIB_DIRS "Trainer")
 list(APPEND EXTRA_INCLUDE_DIRS "Trainer")
 list(APPEND EXTRA_LINK_DIRS Trainer)
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDE_DIRS})
-target_link_directories(${PROJECT_NAME} PUBLIC ${EXTRA_LIB_DIRS})
-target_link_libraries(${PROJECT_NAME} PUBLIC ${EXTRA_LINK_DIRS})
 
 if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wno-error=invalid-offsetof -Wno-error=unused-function -Wno-error=unused-but-set-variable -Wno-error=unused-variable -Wno-error=sign-compare -Wno-error=reorder -std=c++2a")
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
     set(CMAKE_CXX_FLAGS_RELEASE "-Ofast")
 endif(UNIX)
+
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${EXTRA_INCLUDE_DIRS})
+target_link_directories(${PROJECT_NAME} PUBLIC ${EXTRA_LIB_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${EXTRA_LINK_DIRS})
