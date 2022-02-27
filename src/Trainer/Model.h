@@ -15,6 +15,7 @@ public:
 
     Model(std::string luaScript);
     void step(int _action);
+    std::vector<float> getObservation();
     int getTurn();
     int getNumObservations();
     int getNumActions();

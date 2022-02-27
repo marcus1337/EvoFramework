@@ -40,3 +40,7 @@ int Model::getScore() {
 bool Model::isDone() {
     return lua["isDone"]();
 }
+
+std::vector<float> Model::getObservation() {
+    return observation;
+}

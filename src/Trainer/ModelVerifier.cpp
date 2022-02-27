@@ -6,6 +6,33 @@ ModelVerifier::ModelVerifier(std::string _luaScript) : luaScript(_luaScript) {
 
 }
 
+bool ModelVerifier::testModel() {
+    Model model(luaScript);
+    int _action = 0;
+    int _numActions = model.getNumActions();
+    int _numObservations = model.getNumObservations();
+
+    if (model.isDone())
+        return false;
+
+    for (int i = 0; i < 100000; i++) {
+        model.step(_action);
+        int score = model.getScore();
+        if (score < 0)
+            return false;
+        if (model.isDone())
+            break;
+        auto vec = model.getObservation();
+        if (vec.size() != _numObservations)
+            return false;
+        if (model.getNumActions() != _numActions)
+            return false;
+        _action = (_action + 1) % model.getNumActions();
+    }
+
+    return true;
+}
+
 bool ModelVerifier::verify() {
 
     if (!testCompile())
@@ -25,6 +52,11 @@ bool ModelVerifier::verify() {
 
     if (!testObserveSize())
         return false;
+
+    if (!testModel()) {
+        std::cout << "Model error." << std::endl;
+        return false;
+    }
 
     return true;
 }

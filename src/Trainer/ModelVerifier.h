@@ -14,6 +14,7 @@ class ModelVerifier {
     bool testScore();
     bool testNumActions();
     bool testIsDone();
+    bool testModel();
 public:
     ModelVerifier(std::string _luaScript);
     bool verify();
