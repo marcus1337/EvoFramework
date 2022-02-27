@@ -11,14 +11,13 @@
 class Trainer {
 
     Mutater mutater;
-    std::string _environmentScript;
-    int numElites, numInputNodes, numOutputNodes;
+    std::string modelScript;
     std::vector<Elite> elites;
 
 public:
 
-    Trainer(int _numElites, int _numInputNodes, int _numOutputNodes, std::string _environmentScript);
-
+    Trainer(int numElites, std::string _environmentScript);
+    void evaluate();
 };
 
 #endif // !TRAINER_H

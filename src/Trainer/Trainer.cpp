@@ -1,14 +1,24 @@
 #include "Trainer.h"
 #include <iostream>
+#include "Environment.h"
 
-Trainer::Trainer(int _numElites, int _numInputNodes, int _numOutputNodes, std::string _environmentScript) :
-	numElites(_numElites), numInputNodes(_numInputNodes), numOutputNodes(_numOutputNodes) {
+Trainer::Trainer(int numElites, std::string _modelScript) : modelScript(_modelScript) {
+
+	Environment env(modelScript);
+	int numIn = env.getNumObservations();
+	int numOut = env.getNumActions();
 
 	elites.reserve(numElites);
 	for (int i = 0; i < numElites; i++) {
-		int hiddenLayerSize = (numInputNodes / 3) * 2 + numOutputNodes;
-		NN nn({ numInputNodes, hiddenLayerSize, hiddenLayerSize , numOutputNodes });
+		NN nn = NN::makeDefaultNetwork(numIn, numOut);
 		mutater.randomize(nn);
-		elites.push_back(Elite(nn, i));
+		elites.push_back(Elite(nn));
+	}
+}
+
+void Trainer::evaluate() {
+	for (Elite& elite : elites) {
+		Environment env(modelScript);
+		elite.fitness = env.score(elite.nn);
 	}
 }
