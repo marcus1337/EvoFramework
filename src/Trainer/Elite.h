@@ -5,10 +5,9 @@
 
 class Elite {
 public:
-    Elite(NN _nn, int _behaviorA = 0, int _fitness = -1);
+    Elite(NN _nn, int _fitness = -1);
 
     int fitness;
-    int behaviorA;
     NN nn;
 };
 

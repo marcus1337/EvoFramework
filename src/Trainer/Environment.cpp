@@ -1,13 +1,26 @@
 #include "Environment.h"
 #include <iostream>
 
-struct vars {
-    int boop = 0;
-};
 
-Environment::Environment(std::string _luaScript) : luaScript(_luaScript) {
-    lua.new_usertype<vars>("vars", "boop", &vars::boop);
-    lua.script("beep = vars.new()\n"
-        "beep.boop = 1");
-    std::cout << "LUA TEST: " << lua.get<vars>("beep").boop << "\n";
+
+Environment::Environment(std::string _luaScript) : model(_luaScript) {
+    std::cout << "#actions: " << model.getNumActions() << "\n";
+    std::cout << "#observations: " << model.getNumObservations() << "\n";
+    for (std::size_t i = 0; i < 10000; i++) {
+        if (model.isDone())
+            break;
+        if ((i % 100) == 0) {
+            std::cout << "isDone(): " << model.isDone() << ", score: " << model.getScore() << ", step: " << model.getTurn() << "\n";
+            model.step(0);
+        }
+    }
+}
+
+void Environment::reset() {
+   
+}
+
+int Environment::score(NN& nn) {
+
+    return 0;
 }
