@@ -1,5 +1,4 @@
 #include "Model.h"
-#include "Model.h"
 
 
 Model::Model(std::string _luaScript) : luaScript(_luaScript), turn(0) {
