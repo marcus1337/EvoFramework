@@ -3,24 +3,27 @@
 
 
 
-Environment::Environment(std::string _luaScript) : model(_luaScript) {
-    std::cout << "#actions: " << model.getNumActions() << "\n";
-    std::cout << "#observations: " << model.getNumObservations() << "\n";
-    for (std::size_t i = 0; i < 10000; i++) {
-        if (model.isDone())
-            break;
-        if ((i % 100) == 0) {
-            std::cout << "isDone(): " << model.isDone() << ", score: " << model.getScore() << ", step: " << model.getTurn() << "\n";
-            model.step(0);
-        }
-    }
+Environment::Environment(std::string _luaScript) : luaScript(_luaScript), model(_luaScript) {
+
 }
 
 void Environment::reset() {
-   
+    model = Model(luaScript);
 }
 
 int Environment::score(NN& nn) {
+    while (!model.isDone() && model.getTurn() < maxTurns) {
+        std::vector<float> observation = model.getObservation();
+        nn.propagate(observation);
+        model.step(nn.getOutputIndex());
+    }
+    return model.getScore();
+}
 
-    return 0;
+int Environment::getNumObservations() {
+    return model.getNumObservations();
+}
+
+int Environment::getNumActions() {
+    return model.getNumActions();
 }

@@ -12,6 +12,7 @@ class NN {
 
 public:
 
+    static NN makeDefaultNetwork(int numInput, int numOutput);
     NN(std::vector<int> numNodesInLayers);
     void propagate(const std::vector<float>&);
     int getOutputIndex() const;

@@ -9,11 +9,15 @@
 
 class Environment {
     Model model;
+    std::string luaScript;
+    static constexpr int maxTurns = 10000;
 public:
 
     Environment(std::string _luaScript);
     void reset();
     int score(NN& nn);
+    int getNumObservations();
+    int getNumActions();
 
 };
 

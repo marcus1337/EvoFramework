@@ -1,5 +1,10 @@
 #include "NN.h"
 
+NN NN::makeDefaultNetwork(int numInput, int numOutput) {
+    int numHiddenNodes = ((numInput/3)*2) + numOutput;
+    NN nn({numInput, numHiddenNodes, numHiddenNodes, numOutput});
+    return nn;
+}
 
 NN::NN(std::vector<int> numNodesInLayers) {
     for (std::size_t i = 0; i < numNodesInLayers.size(); i++) {
