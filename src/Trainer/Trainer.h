@@ -13,11 +13,16 @@ class Trainer {
     Mutater mutater;
     std::string modelScript;
     std::vector<Elite> elites;
+    Elite bestElite;
+    void evaluate();
+    void select();
+    void mutate();
 
 public:
 
     Trainer(int numElites, std::string _environmentScript);
-    void evaluate();
+    void train();
+    NN getBestNN();
 };
 
 #endif // !TRAINER_H
