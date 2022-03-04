@@ -1,4 +1,5 @@
 #include "NN.h"
+#include <sstream>
 
 NN NN::makeDefaultNetwork(int numInput, int numOutput) {
     int numHiddenNodes = ((numInput/3)*2) + numOutput;
@@ -90,4 +91,24 @@ std::vector<std::reference_wrapper<std::vector<Edge>>> NN::getEdgesRefs() {
 
 std::reference_wrapper<std::vector<Edge>> NN::getEdgesRef(int index) {
     return layers[index].getEdgesRef();
+}
+
+std::string NN::getStringRepresentation() {
+    std::string str = "";
+    int numLayers = getNumLayers();
+    str += std::to_string(numLayers) + "\n";
+    for (std::size_t i = 0; i < numLayers; i++) {
+        str += std::to_string(getNumNodesInLayer(i)) + " ";
+    }
+    str += "\n";
+
+    auto allEdges = getEdgesRefs();
+    for (auto& edgesLayer : allEdges) {
+        for (Edge& edge : edgesLayer.get()) {
+            std::ostringstream ss;
+            ss << edge.weight;
+            str += std::to_string(edge.from) + " " + std::to_string(edge.to) + " " + ss.str() + "\n";
+        }
+    }
+    return str;
 }

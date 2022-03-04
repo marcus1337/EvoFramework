@@ -1,6 +1,7 @@
 #include <vector>
 #include "NNLayer.h"
 #include <functional>
+#include <string>
 
 #ifndef NN_H
 #define NN_H
@@ -25,6 +26,8 @@ public:
     float getWeight(int index) const;
     std::vector<std::reference_wrapper<std::vector<Edge>>> getEdgesRefs();
     std::reference_wrapper<std::vector<Edge>> getEdgesRef(int index);
+
+    std::string getStringRepresentation();
 
 };
 
