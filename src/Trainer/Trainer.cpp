@@ -2,6 +2,9 @@
 #include <iostream>
 #include "Environment.h"
 #include <algorithm>
+#include <functional>
+#include <future>
+#include <execution>
 
 Trainer::Trainer(int numElites, std::string _modelScript) : modelScript(_modelScript), isTraining(false), bestElite(NN({})) {
 
@@ -22,10 +25,15 @@ Trainer::~Trainer() {
 }
 
 void Trainer::evaluate() {
-    for (Elite& elite : elites) {
-        Environment env(modelScript);
-        elite.fitness = env.score(elite.nn);
-    }
+    std::for_each(
+        std::execution::par_unseq,
+        elites.begin(),
+        elites.end(),
+        [&modelScript = modelScript](Elite& elite)
+        {
+            Environment env(modelScript);
+            elite.fitness = env.score(elite.nn);
+        });
 }
 
 void Trainer::select() {
