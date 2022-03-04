@@ -4,6 +4,8 @@
 #include "NN/NN.h"
 #include "Mutation/Mutater.h"
 #include "Elite.h"
+#include <atomic>
+#include <thread>
 
 #ifndef TRAINER_H
 #define TRAINER_H
@@ -18,10 +20,15 @@ class Trainer {
     void select();
     void mutate();
 
+    std::atomic<bool> isTraining;
+    std::thread trainingThread;
+
 public:
 
     Trainer(int numElites, std::string _environmentScript);
-    void train();
+    ~Trainer();
+    bool train();
+    void stopTraining();
     NN getBestNN();
 };
 
