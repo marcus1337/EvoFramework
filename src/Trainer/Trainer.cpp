@@ -10,7 +10,10 @@ Trainer::Trainer(int numElites, std::string _modelScript) : isTraining(false) {
     reset(numElites, _modelScript);
 }
 
-void Trainer::reset(int numElites, std::string _environmentScript) {
+bool Trainer::reset(int numElites, std::string _environmentScript) {
+    if (isTraining)
+        return false;
+
     elites.clear();
     elites.reserve(numElites);
 
@@ -24,6 +27,7 @@ void Trainer::reset(int numElites, std::string _environmentScript) {
         elites.push_back(Elite(nn));
     }
     bestElite = Elite();
+    return true;
 }
 
 Trainer::~Trainer() {
