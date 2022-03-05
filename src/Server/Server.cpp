@@ -15,8 +15,14 @@ Server::Server() {
         while 1 do
           local client = server:accept()
           client:settimeout(10)
-          local line, err = client:receive()
-          if not err then client:send(line .. "\n") end
+          local line, err = client:receive("*l")
+          if err then
+              print("err: " .. err)
+          end
+          if line then
+            print("line: " .. line)
+          end  
+        if not err then client:send(line .. "\n") end
           client:close()
         end
     )";
