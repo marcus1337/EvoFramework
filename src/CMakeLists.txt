@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.18.4)
 project(EvoFramework)
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(${PROJECT_NAME} main.cpp "Trainer/Trainer.h")
+add_executable(${PROJECT_NAME} main.cpp "Trainer/Trainer.h" "Server/Server.h" "Server/Server.cpp")
 include_directories("${PROJECT_SOURCE_DIR}")
 
 add_subdirectory(NN)
@@ -32,6 +32,11 @@ add_subdirectory(Trainer)
 list(APPEND EXTRA_LIB_DIRS "Trainer")
 list(APPEND EXTRA_INCLUDE_DIRS "Trainer")
 list(APPEND EXTRA_LINK_DIRS Trainer)
+
+add_subdirectory(Server)
+list(APPEND EXTRA_LIB_DIRS "Server")
+list(APPEND EXTRA_INCLUDE_DIRS "Server")
+list(APPEND EXTRA_LINK_DIRS Server)
 
 if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wno-error=invalid-offsetof -Wno-error=unused-function -Wno-error=unused-but-set-variable -Wno-error=unused-variable -Wno-error=sign-compare -Wno-error=reorder -pthread -std=c++2a")
