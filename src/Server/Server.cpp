@@ -5,13 +5,10 @@ Server::Server() {
     lua.open_libraries(sol::lib::base, sol::lib::table, sol::lib::coroutine, sol::lib::io, sol::lib::package, sol::lib::string, sol::lib::bit32, sol::lib::math, sol::lib::debug);
 
     std::string _script = R"(
-        print("lua...")
+
         local socket = require("socket")
-        print("A")
-        local server = assert(socket.bind("*", 0))
-        print("B")
+        local server = assert(socket.bind("*", 1337))
         local ip, port = server:getsockname()
-        print("C")
         print("Please telnet to localhost on port " .. port)
         print("After connecting, you have 10s to enter a line to be echoed")
 
