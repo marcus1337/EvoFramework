@@ -6,18 +6,24 @@
 #include <future>
 #include <execution>
 
-Trainer::Trainer(int numElites, std::string _modelScript) : modelScript(_modelScript), isTraining(false), bestElite(NN({})) {
+Trainer::Trainer(int numElites, std::string _modelScript) : isTraining(false) {
+    reset(numElites, _modelScript);
+}
 
+void Trainer::reset(int numElites, std::string _environmentScript) {
+    elites.clear();
+    elites.reserve(numElites);
+
+    modelScript = _environmentScript;
     Environment env(modelScript);
     int numIn = env.getNumObservations();
     int numOut = env.getNumActions();
-
-    elites.reserve(numElites);
     for (int i = 0; i < numElites; i++) {
         NN nn = NN::makeDefaultNetwork(numIn, numOut);
         mutater.randomize(nn);
         elites.push_back(Elite(nn));
     }
+    bestElite = Elite();
 }
 
 Trainer::~Trainer() {

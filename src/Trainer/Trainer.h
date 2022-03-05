@@ -25,7 +25,8 @@ class Trainer {
 
 public:
 
-    Trainer(int numElites, std::string _environmentScript);
+    Trainer(int numElites = 0, std::string _environmentScript = "");
+    void reset(int numElites, std::string _environmentScript);
     ~Trainer();
     bool train();
     void stopTraining();
