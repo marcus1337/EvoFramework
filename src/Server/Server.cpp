@@ -4,6 +4,7 @@
 
 Server::Server() {
     lua.open_libraries(sol::lib::base, sol::lib::table, sol::lib::coroutine, sol::lib::io, sol::lib::package, sol::lib::string, sol::lib::bit32, sol::lib::math, sol::lib::debug);
+    lua.set_function("handleRequest", &Server::handleRequest, this);
 
     serverScript = R"(
         local socket = require("socket")
@@ -18,14 +19,21 @@ Server::Server() {
           if err then
               print("err: " .. err)
           end
-          if line then
-            print("line: " .. line)
-          end  
-        if not err then client:send(line .. "\n") end
+          if not err then
+              local serverReply = handleRequest(line)
+              client:send(serverReply) 
+          end
           client:close()
         end
     )";
 
+}
+
+std::string Server::handleRequest(std::string requestStr) {
+    std::string response = "Ok...";
+    std::cout << "Received request: " << requestStr << "\n";
+
+    return response;
 }
 
 void Server::start() {
@@ -39,6 +47,6 @@ void Server::start() {
 }
 
 void Server::interruptHandler(int signum) {
-    std::cout << "Interrupt signal (" << signum << ") received. Shutting down server." << std::endl;
+    std::cout << "Interrupt signal (" << signum << ") received. Shutting down server..." << std::endl;
     exit(signum);
 }

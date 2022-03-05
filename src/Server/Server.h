@@ -9,6 +9,7 @@ class Server {
     sol::state lua;
     std::string serverScript;
     static void interruptHandler(int signum);
+    std::string handleRequest(std::string requestStr);
 public:
     Server();
     void start();
