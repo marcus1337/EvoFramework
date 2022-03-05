@@ -1,5 +1,6 @@
 #include "NNLayer.h"
 #include <iostream>
+#include <math.h>
 
 float NNLayer::sigmoid(const float x) const {
     return 1.f / (1 + exp(-x));
