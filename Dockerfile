@@ -22,15 +22,12 @@ RUN make
 RUN mv * /usr/share/lua/5.3
 
 WORKDIR /app/build
-
 RUN apt-get install g++-10 -y
 RUN apt-get install gcc-10 -y
-
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
 RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
 
-RUN g++ --version
-RUN cmake ..
+RUN cmake -DCMAKE_BUILD_TYPE=Release ..
 RUN make
 EXPOSE 1337
 CMD ["./EvoFramework"]
