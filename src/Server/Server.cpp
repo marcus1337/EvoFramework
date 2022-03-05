@@ -1,6 +1,10 @@
 #include "Server.h"
 #include <iostream>
 #include <signal.h>
+#include <sstream>
+#include <regex>
+#include <iterator>
+#include "HelpRequest.h"
 
 Server::Server() {
     lua.open_libraries(sol::lib::base, sol::lib::table, sol::lib::coroutine, sol::lib::io, sol::lib::package, sol::lib::string, sol::lib::bit32, sol::lib::math, sol::lib::debug);
@@ -29,11 +33,32 @@ Server::Server() {
 
 }
 
-std::string Server::handleRequest(std::string requestStr) {
-    std::string response = "Ok...";
-    std::cout << "Received request: " << requestStr << "\n";
+RequestCommand* Server::makeRequestCommand(std::vector<std::string> args) {
+    std::string tag = args[0];
+    args.erase(args.begin());
+    if (tag == "help") {
+        return new HelpRequest(args);
+    }
 
+    return nullptr;
+}
+
+std::string Server::handleRequest(std::string requestStr) {
+    std::cout << "Received request {" << requestStr << "}\n";
+    RequestCommand* command = makeRequestCommand(getArgs(requestStr));
+    if (command == nullptr)
+        return "Error: Command not found.\n";
+    std::string response = command->execute();
+    delete command;
     return response;
+}
+
+std::vector<std::string> Server::getArgs(std::string requestStr) {
+    if (requestStr.starts_with("help")) {
+        return { "help" };
+    }
+
+    return {"none"};
 }
 
 void Server::start() {
