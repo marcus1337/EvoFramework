@@ -10,31 +10,57 @@ Server::Server() {
     lua.open_libraries(sol::lib::base, sol::lib::table, sol::lib::coroutine, sol::lib::io, sol::lib::package, sol::lib::string, sol::lib::bit32, sol::lib::math, sol::lib::debug);
     lua.set_function("handleRequest", &Server::handleRequest, this);
 
+    webGUICode = R"(
+        <!DOCTYPE html>
+        <html>
+        <body>
+
+        <h1>My First Heading</h1>
+        <p>My first paragraph.</p>
+
+        </body>
+        </html>
+    )";
+
+    lua["webGUICode"] = webGUICode;
+
     serverScript = R"(
         local socket = require("socket")
         local server = assert(socket.bind("*", 1337))
         local ip, port = server:getsockname()
-        local timeoutSeconds = 120
+        local timeoutSeconds = 10
         print("Lua TCP socket listening on port " .. port .. ".")
         print("Connection timeout is " .. timeoutSeconds .. "s. Socket reads one line at a time which is terminated by a newline character, \'\\n\'.")
+        
+        function handleClient(client)
+            client:settimeout(timeoutSeconds)
+            local line, err = client:receive("*l")
+            if err then
+              print("err: " .. err)
+            end
+            if not err then
+                print("Received [" .. line .. "]")
+                if line == "GET / HTTP/1.1" then
+                    client:send("HTTP/1.0 200 OK\n\n" .. webGUICode) 
+                else
+                    local serverReply = handleRequest(line)
+                    client:send(serverReply) 
+                end
+            end
+            client:close()
+        end
+
         while 1 do
           local client = server:accept()
-          client:settimeout(timeoutSeconds)
-          local line, err = client:receive("*l")
-          if err then
-              print("err: " .. err)
-          end
-          if not err then
-              local serverReply = handleRequest(line)
-              client:send(serverReply) 
-          end
-          client:close()
+          local co = coroutine.create(handleClient)
+          coroutine.resume(co, client)
         end
     )";
 
 }
 
 std::string Server::handleRequest(std::string requestStr) {
+    const std::lock_guard<std::mutex> lock(requestMutex);
     std::cout << "Received request {" << requestStr << "}\n";
     RequestCommand* command = requestFactory.createRequest(getArgs(requestStr));
     if (command == nullptr)
