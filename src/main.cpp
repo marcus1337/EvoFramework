@@ -25,5 +25,6 @@ void testServer() {
 
 int main(int argc, char* argv[]) {
     testServer();
+    //testEnv();
     return 0;
 }

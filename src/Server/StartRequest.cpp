@@ -30,9 +30,13 @@ StartRequest::StartRequest(std::vector<std::string> _args, Trainer& _trainer) : 
 std::string StartRequest::execute() {
     if (errorMsg != "")
         return errorMsg;
-    bool isNewStart = trainer.reset(numAIs, luaScript);    
-    if (!isNewStart) {
+    bool isReset = trainer.reset(numAIs, luaScript);    
+    if (!isReset) {
         return "Error: Already training.";
+    }
+    bool isTraining = trainer.train();
+    if (!isTraining) {
+        return "Error: Couldn't start training.";
     }
     return okResponse;
 };

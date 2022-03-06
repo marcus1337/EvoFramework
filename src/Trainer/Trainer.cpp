@@ -7,7 +7,7 @@
 #include <execution>
 #include <ctime>
 
-Trainer::Trainer(int numElites, std::string _modelScript) : isTraining(false) {
+Trainer::Trainer(int numElites, std::string _modelScript) : isTraining(false), bestScore(0){
     if(numElites > 0)
         reset(numElites, _modelScript);
 }
@@ -15,7 +15,7 @@ Trainer::Trainer(int numElites, std::string _modelScript) : isTraining(false) {
 bool Trainer::reset(int numElites, std::string _environmentScript) {
     if (isTraining)
         return false;
-
+    bestScore = 0;
     elites.clear();
     elites.reserve(numElites);
 
@@ -55,6 +55,7 @@ void Trainer::select() {
             return a.fitness < b.fitness;
         });
     bestElite = *elitePtr;
+    bestScore = bestElite.fitness;
     bestElite.fitness = 0;
     for (std::size_t i = 0; i < elites.size(); i++) {
         elites[i] = bestElite;
@@ -100,12 +101,13 @@ NN Trainer::getBestNN() {
 
 std::string Trainer::getStatus() {
     std::string status = "";
-    status += "Is currently training: ";
+    status += "Is training: ";
     if (isTraining)
         status += "True";
     else
         status += "False";
     status += "\n";
+    status += "Score: " + std::to_string(bestScore) + "\n";
 
     if (!isTraining) {
         return status;

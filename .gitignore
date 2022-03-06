@@ -1,4 +1,5 @@
 build/
+build2/
 .vs/
 src/out/
 src/Tests/build/

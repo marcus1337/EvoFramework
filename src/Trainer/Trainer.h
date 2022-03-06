@@ -23,6 +23,7 @@ class Trainer {
     void mutate();
 
     std::atomic<bool> isTraining;
+    std::atomic<int> bestScore;
     std::thread trainingThread;
 
 public:
