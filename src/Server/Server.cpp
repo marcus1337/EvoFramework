@@ -4,6 +4,7 @@
 #include <sstream>
 #include <regex>
 #include <iterator>
+#include <string_view>
 
 Server::Server() {
     lua.open_libraries(sol::lib::base, sol::lib::table, sol::lib::coroutine, sol::lib::io, sol::lib::package, sol::lib::string, sol::lib::bit32, sol::lib::math, sol::lib::debug);
@@ -13,11 +14,12 @@ Server::Server() {
         local socket = require("socket")
         local server = assert(socket.bind("*", 1337))
         local ip, port = server:getsockname()
+        local timeoutSeconds = 120
         print("Please telnet to localhost on port " .. port)
-        print("After connecting, you have 10s to enter a line to be echoed")
+        print("After connecting, you have " .. timeoutSeconds .. "s to enter a line to be echoed")
         while 1 do
           local client = server:accept()
-          client:settimeout(10)
+          client:settimeout(timeoutSeconds)
           local line, err = client:receive("*l")
           if err then
               print("err: " .. err)
@@ -43,24 +45,39 @@ std::string Server::handleRequest(std::string requestStr) {
 }
 
 std::vector<std::string> Server::getArgs(std::string requestStr) {
-    if (requestStr.empty())
-        return { "none" };
-
     std::vector<std::string> args;
-    std::string arg;
-    while ((arg = getArg(requestStr)) != "") {
+    std::string arg = getArg(requestStr);
+    while (arg != "") {
         std::cout << "ARG: " << arg << "\n";
         args.push_back(arg);
+        arg = getArg(requestStr);
     }
+
+    if (args.empty())
+        return { "none" };
 
     return args;
 }
 
-std::string Server::getArg(std::string& requestStr) {
+std::string Server::getArg(std::string& str) {
     std::string arg = "";
-    if (!requestStr.empty())
-        arg = requestStr.substr(0, 1);
-    requestStr.erase(requestStr.begin());
+    std::string_view argView = str;
+    argView.remove_prefix(std::min(argView.find_first_not_of(" "), argView.size()));
+    str = argView;
+    if (str.empty())
+        return arg;
+
+    if (isalpha((unsigned char)str[0])) {
+        size_t space_pos = str.find(" ");
+        arg = str.substr(0, space_pos);
+        str = str.substr(space_pos + 1);
+        if (space_pos == std::string::npos)
+            str = "";
+    }
+    else {
+        str = "";
+    }
+    
     return arg;
 }
 
