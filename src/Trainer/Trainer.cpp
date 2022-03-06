@@ -69,11 +69,14 @@ void Trainer::mutate() {
     }
 }
 
-void Trainer::stopTraining() {
+bool Trainer::stopTraining() {
+    if (!isTraining)
+        return false;
     if (trainingThread.joinable()) {
         isTraining = false;
         trainingThread.join();
     }
+    return true;
 }
 
 bool Trainer::train() {

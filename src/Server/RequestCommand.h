@@ -9,6 +9,7 @@ class RequestCommand {
 
 protected:
     std::vector<std::string> args;
+    const std::string okResponse = "Ok";
 
 public:
     RequestCommand(std::vector<std::string> _args);

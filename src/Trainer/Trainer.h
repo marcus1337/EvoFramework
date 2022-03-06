@@ -31,7 +31,7 @@ public:
     bool reset(int numElites, std::string _environmentScript);
     ~Trainer();
     bool train();
-    void stopTraining();
+    bool stopTraining();
     NN getBestNN();
     std::string getStatus();
 };
