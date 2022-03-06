@@ -15,8 +15,8 @@ Server::Server() {
         local server = assert(socket.bind("*", 1337))
         local ip, port = server:getsockname()
         local timeoutSeconds = 120
-        print("Please telnet to localhost on port " .. port)
-        print("After connecting, you have " .. timeoutSeconds .. "s to enter a line to be echoed")
+        print("Lua TCP socket listening on port " .. port .. ".")
+        print("Connection timeout is " .. timeoutSeconds .. "s. Socket reads one line at a time which is terminated by a newline character, \'\\n\'.")
         while 1 do
           local client = server:accept()
           client:settimeout(timeoutSeconds)
