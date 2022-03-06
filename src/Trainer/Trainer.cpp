@@ -5,9 +5,11 @@
 #include <functional>
 #include <future>
 #include <execution>
+#include <ctime>
 
 Trainer::Trainer(int numElites, std::string _modelScript) : isTraining(false) {
-    reset(numElites, _modelScript);
+    if(numElites > 0)
+        reset(numElites, _modelScript);
 }
 
 bool Trainer::reset(int numElites, std::string _environmentScript) {
@@ -78,6 +80,7 @@ bool Trainer::train() {
     if (isTraining)
         return false;
     isTraining = true;
+    trainingStartTime = std::chrono::system_clock::now();
     trainingThread = std::thread{ [&]() {
         while (isTraining) {
             evaluate();
@@ -90,4 +93,22 @@ bool Trainer::train() {
 
 NN Trainer::getBestNN() {
     return bestElite.nn;
+}
+
+std::string Trainer::getStatus() {
+    std::string status = "";
+    status += "Is currently training: ";
+    if (isTraining)
+        status += "True";
+    else
+        status += "False";
+    status += "\n";
+
+    if (!isTraining) {
+        return status;
+    }
+    std::time_t t = std::chrono::system_clock::to_time_t(trainingStartTime);
+    std::string dateStr = std::ctime(&t);
+    status += "Start time: " + dateStr + "\n";
+    return status;
 }

@@ -6,11 +6,13 @@
 #include "Elite.h"
 #include <atomic>
 #include <thread>
+#include <chrono>
 
 #ifndef TRAINER_H
 #define TRAINER_H
 
 class Trainer {
+    std::chrono::system_clock::time_point trainingStartTime;
 
     Mutater mutater;
     std::string modelScript;
@@ -31,6 +33,7 @@ public:
     bool train();
     void stopTraining();
     NN getBestNN();
+    std::string getStatus();
 };
 
 #endif // !TRAINER_H

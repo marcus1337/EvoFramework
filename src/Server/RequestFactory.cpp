@@ -1,5 +1,6 @@
 #include "RequestFactory.h"
 #include "HelpRequest.h"
+#include "StatsRequest.h"
 
 RequestCommand* RequestFactory::createRequest(std::vector<std::string> args) {
     RequestCommand* command = nullptr;
@@ -8,6 +9,9 @@ RequestCommand* RequestFactory::createRequest(std::vector<std::string> args) {
 
     if (tag == "help") {
         return new HelpRequest(args);
+    }
+    if (tag == "stats") {
+        return new StatsRequest(args, trainer);
     }
 
     return command;
