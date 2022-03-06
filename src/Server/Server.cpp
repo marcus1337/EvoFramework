@@ -67,17 +67,19 @@ std::string Server::getArg(std::string& str) {
     if (str.empty())
         return arg;
 
-    if (isalpha((unsigned char)str[0])) {
+    std::string scriptKey = "script:";
+    if (str.starts_with(scriptKey)) {
+        arg = str.substr(scriptKey.size(), str.size() - 1);
+        str = "";
+    }
+    else {
         size_t space_pos = str.find(" ");
         arg = str.substr(0, space_pos);
         str = str.substr(space_pos + 1);
         if (space_pos == std::string::npos)
             str = "";
     }
-    else {
-        str = "";
-    }
-    
+
     return arg;
 }
 
