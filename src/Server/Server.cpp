@@ -46,11 +46,22 @@ std::vector<std::string> Server::getArgs(std::string requestStr) {
     if (requestStr.empty())
         return { "none" };
 
-    if (requestStr.starts_with("help")) {
-        return { "help" };
+    std::vector<std::string> args;
+    std::string arg;
+    while ((arg = getArg(requestStr)) != "") {
+        std::cout << "ARG: " << arg << "\n";
+        args.push_back(arg);
     }
 
-    return {"none"};
+    return args;
+}
+
+std::string Server::getArg(std::string& requestStr) {
+    std::string arg = "";
+    if (!requestStr.empty())
+        arg = requestStr.substr(0, 1);
+    requestStr.erase(requestStr.begin());
+    return arg;
 }
 
 void Server::start() {
