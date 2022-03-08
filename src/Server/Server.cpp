@@ -10,20 +10,6 @@ Server::Server() {
     lua.open_libraries(sol::lib::base, sol::lib::table, sol::lib::coroutine, sol::lib::io, sol::lib::package, sol::lib::string, sol::lib::bit32, sol::lib::math, sol::lib::debug);
     lua.set_function("handleRequest", &Server::handleRequest, this);
 
-    webGUICode = R"(
-        <!DOCTYPE html>
-        <html>
-        <body>
-
-        <h1>My First Heading</h1>
-        <p>My first paragraph.</p>
-
-        </body>
-        </html>
-    )";
-
-    lua["webGUICode"] = webGUICode;
-
     serverScript = R"(
         local socket = require("socket")
         local server = assert(socket.bind("*", 1337))
@@ -38,14 +24,9 @@ Server::Server() {
             if err then
               print("err: " .. err)
             end
-            if not err then
-                print("Received [" .. line .. "]")
-                if line == "GET / HTTP/1.1" then
-                    client:send("HTTP/1.0 200 OK\n\n" .. webGUICode) 
-                else
-                    local serverReply = handleRequest(line)
-                    client:send(serverReply) 
-                end
+            if line then
+                local serverReply = handleRequest(line)
+                client:send(serverReply) 
             end
             client:close()
         end
