@@ -11,7 +11,6 @@ class Server {
     RequestFactory requestFactory;
     sol::state lua;
     std::string serverScript;
-    std::string webGUICode;
     std::mutex requestMutex;
     static void interruptHandler(int signum);
     std::string handleRequest(std::string requestStr);
