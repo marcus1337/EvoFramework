@@ -1,4 +1,4 @@
-#include "RequestCommand.h"
+#include "Server/Requests/RequestCommand.h"
 #include <string>
 #include <vector>
 #include "Trainer/Trainer.h"

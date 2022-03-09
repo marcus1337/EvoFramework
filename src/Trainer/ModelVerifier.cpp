@@ -34,6 +34,7 @@ bool ModelVerifier::testModel() {
 }
 
 bool ModelVerifier::verify() {
+    errorMsg = "";
 
     if (!testCompile())
         return false;
@@ -54,7 +55,7 @@ bool ModelVerifier::verify() {
         return false;
 
     if (!testModel()) {
-        std::cout << "Model error." << std::endl;
+        errorMsg = "Model error.";
         return false;
     }
 
@@ -66,7 +67,7 @@ bool ModelVerifier::testObserve()
     sol::protected_function problematicObserve = lua["observe"];
     sol::optional<sol::table> observeTable = problematicObserve();
     if (!observeTable) {
-        std::cout << "observe() error." << std::endl;
+        errorMsg = "observe() error.";
         return false;
     }
     return true;
@@ -76,13 +77,13 @@ bool ModelVerifier::testObserveSize()
 {
     sol::optional<int> numObserve = lua.script("return #observe()");
     if (!numObserve) {
-        std::cout << "numObserve error." << std::endl;
+        errorMsg = "numObserve error.";
         return false;
     }
 
     sol::table observation = lua["observe"]();
     if (observation.size() != numObserve) {
-        std::cout << "numObserve size error." << std::endl;
+        errorMsg = "numObserve size error.";
         return false;
     }
 }
@@ -91,7 +92,7 @@ bool ModelVerifier::testScore()
 {
     sol::optional<int> scoreExist = lua["score"];
     if (!scoreExist) {
-        std::cout << "score variable missing." << std::endl;
+        errorMsg = "score variable missing.";
         return false;
     }
     return true;
@@ -101,7 +102,7 @@ bool ModelVerifier::testNumActions()
 {
     sol::optional<int> numActionsExist = lua["numActions"];
     if (!numActionsExist) {
-        std::cout << "numActions variable missing." << std::endl;
+        errorMsg = "numActions variable missing.";
         return false;
     }
     return true;
@@ -112,7 +113,7 @@ bool ModelVerifier::testIsDone()
     sol::protected_function problematicIsDone = lua["isDone"];
     sol::optional<bool> isDoneResult = problematicIsDone();
     if (!isDoneResult) {
-        std::cout << "isDone() error." << std::endl;
+        errorMsg = "isDone() error.";
         return false;
     }
     return true;
@@ -122,7 +123,7 @@ bool ModelVerifier::testCompile()
 {
     auto codeResult = lua.script(luaScript, &sol::script_default_on_error);
     if (!codeResult.valid()) {
-        std::cout << "Compile error." << std::endl;
+        errorMsg = "Compile error.";
         return false;
     }
     return true;
@@ -140,6 +141,10 @@ void ModelVerifier::printInfo() {
             model.step(0);
         }
     }
+}
+
+std::string ModelVerifier::getErrorMsg() {
+    return errorMsg;
 }
 
 std::string ModelVerifier::getExampleModel() {

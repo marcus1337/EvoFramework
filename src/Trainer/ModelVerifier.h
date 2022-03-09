@@ -15,10 +15,12 @@ class ModelVerifier {
     bool testNumActions();
     bool testIsDone();
     bool testModel();
+    std::string errorMsg;
 public:
     ModelVerifier(std::string _luaScript);
     bool verify();
     void printInfo();
+    std::string getErrorMsg();
     static std::string getExampleModel();
     static std::vector<std::string> getExampleWrongModels();
 };

@@ -1,8 +1,9 @@
 #include "RequestFactory.h"
-#include "HelpRequest.h"
-#include "StatsRequest.h"
-#include "StartRequest.h"
-#include "StopRequest.h"
+#include "Server/Requests/HelpRequest.h"
+#include "Server/Requests/StatsRequest.h"
+#include "Server/Requests/StartRequest.h"
+#include "Server/Requests/StopRequest.h"
+#include "Server/Requests/TestRequest.h"
 
 RequestCommand* RequestFactory::createRequest(std::vector<std::string> args) {
     RequestCommand* command = nullptr;
@@ -20,6 +21,9 @@ RequestCommand* RequestFactory::createRequest(std::vector<std::string> args) {
     }
     if (tag == "stop") {
         return new StopRequest(args, trainer);
+    }
+    if (tag == "test") {
+        return new TestRequest(args);
     }
 
     return command;
